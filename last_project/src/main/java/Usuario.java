@@ -19,7 +19,20 @@ public class Usuario {
         this.viagens = new ArrayList<>();
     }
 
-    
+    public boolean mudarPlano(Plano plano) {
+        if(plano == null){
+            throw new IllegalArgumentException("Erro: Plano não pode ser nulo");
+        }
+        if(plano == this.plano){
+            return false;
+        }
+        if (plano.getValor() > carteira.getSaldo()){
+            return false;
+        }
+        carteira.debitar(plano.getValor());
+        this.plano = plano;
+        return true;
+    }
 
     public int getCpf() {
         return cpf;

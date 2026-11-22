@@ -16,7 +16,7 @@ public class Carteira implements Extratavel {
 
     public boolean recarregar(double valor){
         if (valor <= 0){
-            throw new IllegalArgumentException("Valor de recarga inválido");
+            throw new IllegalArgumentException("Erro: Valor de recarga inválido");
         }
         operacoes.add(new Operacao(valor, true, saldo+valor));
         saldo += valor;
@@ -25,7 +25,7 @@ public class Carteira implements Extratavel {
 
     public boolean debitar(double valor){
         if (valor <= 0){
-            throw new IllegalArgumentException("Valor de debito inválido");
+            throw new IllegalArgumentException("Erro: Valor de debito inválido");
         }
         if (valor > saldo){
             return false;
