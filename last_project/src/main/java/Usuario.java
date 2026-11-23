@@ -41,6 +41,10 @@ public class Usuario {
         return true;
     }
 
+    public boolean possuiViagemEmAndamento(){
+        return false;
+    }
+
     public String getCpf() {
         return cpf;
     }
