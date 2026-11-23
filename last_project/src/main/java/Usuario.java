@@ -23,9 +23,6 @@ public class Usuario {
     }
 
     public boolean mudarPlano(Plano plano) {
-        if(plano == null){
-            throw new IllegalArgumentException("Erro: Plano não pode ser nulo");
-        }
         if(plano == this.plano){
             return false;
         }
@@ -37,7 +34,7 @@ public class Usuario {
                 return false;
             }
         }
-        this.plano = plano;
+        setPlano(plano);
         return true;
     }
 
@@ -81,14 +78,6 @@ public class Usuario {
         return carteira;
     }
 
-    public void setCarteira(Carteira carteira) {
-        this.carteira = carteira;
-    }
-
-    public Plano getAssinatura() {
-        return plano;
-    }
-
     public Plano getPlano() {
         return plano;
     }
@@ -104,7 +93,10 @@ public class Usuario {
         return viagens;
     }
 
-    public void setViagens(ArrayList<Viagem> viagens) {
-        this.viagens = viagens;
+    public void addViagem(Viagem viagem) {
+        if(viagem == null){
+            throw new IllegalArgumentException("Erro: Viagem inválida");
+        }
+        this.viagens.add(viagem);
     }
 }

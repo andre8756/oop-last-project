@@ -33,9 +33,6 @@ public class Carteira implements Extratavel {
         if (valor <= 0){
             throw new IllegalArgumentException("Erro: Valor de debito inválido");
         }
-        if (valor > saldo){
-            return false;
-        }
         saldo-= valor;
         operacoes.add(new Operacao(valor, false, saldo));
         return true;
