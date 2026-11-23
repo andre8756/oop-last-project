@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Usuario {
-    private int cpf;
+    private String cpf;
     private String nome;
     private String email;
     private String telefone;
@@ -9,7 +9,10 @@ public class Usuario {
     private Plano plano;
     private ArrayList<Viagem> viagens;
 
-    public Usuario( int cpf, String nome, String email, String telefone, Plano plano) {
+    public Usuario(String cpf, String nome, String email, String telefone, Plano plano) {
+        if (plano == null) {
+            throw new IllegalArgumentException("Erro: Plano não pode ser nulo");
+        }
         this.cpf = cpf;
         this.nome = nome;
         this.email = email;
@@ -29,16 +32,20 @@ public class Usuario {
         if (plano.getValor() > carteira.getSaldo()){
             return false;
         }
-        carteira.debitar(plano.getValor());
+        if (plano.getValor() > 0) {
+            if (!carteira.debitar(plano.getValor())) {
+                return false;
+            }
+        }
         this.plano = plano;
         return true;
     }
 
-    public int getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(int cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
@@ -76,6 +83,17 @@ public class Usuario {
 
     public Plano getAssinatura() {
         return plano;
+    }
+
+    public Plano getPlano() {
+        return plano;
+    }
+
+    public void setPlano(Plano plano) {
+        if (plano == null) {
+            throw new IllegalArgumentException("Erro: Plano não pode ser nulo");
+        }
+        this.plano = plano;
     }
 
     public ArrayList<Viagem> getViagens() {

@@ -4,10 +4,6 @@ public class PlanoUniversitario extends Plano{
         super("Universitario", 25);
     }
 
-    @Override
-    public double calcularMensalidade() {
-        return super.calcularMensalidade();
-    }
 
     @Override
     public double calcularViagem() {

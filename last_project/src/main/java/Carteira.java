@@ -1,8 +1,11 @@
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Carteira implements Extratavel {
     private double saldo;
     private ArrayList<Operacao> operacoes;
+    private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter FORMATO_HORA = DateTimeFormatter.ofPattern("HH:mm");
 
     public Carteira() {
         this.saldo = 0;
@@ -10,6 +13,9 @@ public class Carteira implements Extratavel {
     }
 
     public Carteira(double saldoInicial) {
+        if (saldoInicial < 0) {
+            throw new IllegalArgumentException("Erro: Saldo inicial inválido");
+        }
         this.saldo = saldoInicial;
         this.operacoes = new ArrayList<>();
     }
@@ -18,8 +24,8 @@ public class Carteira implements Extratavel {
         if (valor <= 0){
             throw new IllegalArgumentException("Erro: Valor de recarga inválido");
         }
-        operacoes.add(new Operacao(valor, true, saldo+valor));
         saldo += valor;
+        operacoes.add(new Operacao(valor, true, saldo));
         return true;
     }
 
@@ -30,8 +36,8 @@ public class Carteira implements Extratavel {
         if (valor > saldo){
             return false;
         }
-        operacoes.add(new Operacao(valor, false, saldo-valor));
         saldo-= valor;
+        operacoes.add(new Operacao(valor, false, saldo));
         return true;
     }
 
@@ -45,14 +51,24 @@ public class Carteira implements Extratavel {
         if (operacoes.isEmpty()){
             return "Não há operações no momento";
         }
-        System.out.println("Operações: ");
         int indice = 0;
+        System.out.println("Operações: ");
         for (Operacao operacao : operacoes){
             indice+=1;
-            stringBuilder.append(indice+"- Data: "+operacao.getData()
-                    +" - Tipo: " + (operacao.isEntrada()? "Entrada" : "Saída")
-                    +" - Valor: "+operacao.getValor()
-                    +" - Valor após: "+operacao.getSaldoApos()+"\n");
+            stringBuilder
+                    .append(indice).append("- ID: ")
+                    .append(operacao.getId())
+                    .append(" - Data: ")
+                    .append(operacao.getData().format(FORMATO_DATA))
+                    .append(" - Hora: ")
+                    .append(operacao.getData().format(FORMATO_HORA))
+                    .append(" - Tipo: ")
+                    .append(operacao.isEntrada() ? "Entrada" : "Saída")
+                    .append(" - Valor: ")
+                    .append(operacao.getValor())
+                    .append(" - Valor após: ")
+                    .append(operacao.getSaldoApos())
+                    .append("\n");
         }
         return stringBuilder.toString();
     }

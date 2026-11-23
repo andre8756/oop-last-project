@@ -1,16 +1,29 @@
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class Operacao {
-    private LocalDateTime data;
-    private double valor;
-    private boolean entrada;
-    private double saldoApos;
+    private final UUID id;
+    private final LocalDateTime data;
+    private final double valor;
+    private final boolean entrada;
+    private final double saldoApos;
 
     public Operacao(double valor, boolean entrada, double saldoApos) {
+        if (valor <= 0) {
+            throw new IllegalArgumentException("Erro: Valor da operação inválido");
+        }
+        if (saldoApos < 0) {
+            throw new IllegalArgumentException("Erro: Saldo após a operação inválido");
+        }
+        this.id = UUID.randomUUID();
         this.data = LocalDateTime.now();
         this.valor = valor;
         this.entrada = entrada;
         this.saldoApos = saldoApos;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public LocalDateTime getData() {
