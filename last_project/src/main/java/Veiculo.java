@@ -8,6 +8,8 @@ public abstract class Veiculo {
 
     public Veiculo(String modelo) {
         setModelo(modelo);
+        disponibilizarVeiculo();
+
 
         contadorVeiculo++;
         codigo = contadorVeiculo;
@@ -40,7 +42,7 @@ public abstract class Veiculo {
         return codigo;
     }
 
-    public int getContadorVeiculo() {
+    public static int getContadorVeiculo() {
         return contadorVeiculo;
     }
 
@@ -49,11 +51,12 @@ public abstract class Veiculo {
     }
 
     private void setModelo(String modelo) {
-        if(modelo != null &&  !modelo.isBlank()) {
-            this.modelo = modelo;
+        if(modelo == null ||  modelo.isBlank()) {
+            throw new IllegalArgumentException("o campo Modelo não pode estar vazio!");
         }
 
-        throw new IllegalArgumentException("o campo Modelo não pode estar vazio!");
+        this.modelo = modelo;
+
     }
 
 
