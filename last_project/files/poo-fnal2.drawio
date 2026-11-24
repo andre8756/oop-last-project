@@ -243,7 +243,7 @@
             <Array as="points" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="dve15Ndmr7Hoew_X-wOL-60" parent="1" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;br&gt;StatusVeiculo" vertex="1">
+        <mxCell id="dve15Ndmr7Hoew_X-wOL-60" parent="1" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;br&gt;Enums.StatusVeiculo" vertex="1">
           <mxGeometry height="118" width="160" x="-1570" y="359" as="geometry">
             <mxRectangle height="40" width="120" x="310" y="660" as="alternateBounds" />
           </mxGeometry>
@@ -299,7 +299,7 @@
         <mxCell id="dve15Ndmr7Hoew_X-wOL-79" parent="dve15Ndmr7Hoew_X-wOL-62" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="- setModelo(): String" vertex="1">
           <mxGeometry height="26" width="180" y="320" as="geometry" />
         </mxCell>
-        <mxCell id="dve15Ndmr7Hoew_X-wOL-117" parent="dve15Ndmr7Hoew_X-wOL-62" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ getStatus(): StatusVeiculo" vertex="1">
+        <mxCell id="dve15Ndmr7Hoew_X-wOL-117" parent="dve15Ndmr7Hoew_X-wOL-62" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ getStatus(): Enums.StatusVeiculo" vertex="1">
           <mxGeometry height="26" width="180" y="346" as="geometry" />
         </mxCell>
         <mxCell id="dve15Ndmr7Hoew_X-wOL-69" parent="1" style="verticalAlign=middle;align=center;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=0;html=1;whiteSpace=wrap;" value="A classe Veiculo é Abstract" vertex="1">
