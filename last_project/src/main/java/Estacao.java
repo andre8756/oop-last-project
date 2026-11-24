@@ -28,7 +28,7 @@ public class Estacao {
         codigo = contadorEstacao;
     }
 
-    public boolean adicionarVeiculo(Veiculo veiculo) {
+    public boolean estacionarVeiculo(Veiculo veiculo) {
 
         if (veiculo == null) {
             throw new IllegalArgumentException("Veículo não pode ser nulo!");
@@ -42,6 +42,7 @@ public class Estacao {
             return false;
         }
 
+        veiculo.disponibilizarVeiculo();
         return frota.add(veiculo);
     }
 
@@ -57,7 +58,15 @@ public class Estacao {
     }
 
     public boolean removerVeiculo(int codigo) {
-        return frota.removeIf(veiculo -> veiculo.getCodigo() == codigo);
+        Veiculo veiculo = procurarVeiculo(codigo);
+
+        if (veiculo == null) {
+            return false;
+        }
+
+        frota.remove(veiculo);
+        veiculo.utilizarVeiculo();
+        return true;
     }
 
     public int getCodigo() {
@@ -175,4 +184,16 @@ public class Estacao {
 
         this.estado = estado.trim().toUpperCase();
     }
+
+    // Metodos auxiliares:
+
+    public String getEndereco() {
+        return String.format("%s, %s - %s, %s/%s - CEP %s",
+                rua, numero, bairro, cidade, estado, formatarCep());
+    }
+
+    private String formatarCep() {
+        return cep.substring(0, 5) + "-" + cep.substring(5);
+    }
+
 }

@@ -16,7 +16,7 @@ public abstract class Veiculo {
     }
 
     // Vai retornar a taxa de desbloqueio do veiculo
-    public abstract double taxaDesbloquieo();
+    public abstract double taxaDesbloqueio();
 
     // Metodo que ira retornar o valor que o veiculo custa por minuto
     public abstract double valorMinuto();
@@ -27,6 +27,10 @@ public abstract class Veiculo {
     }
 
     public void enviarManutencao(){
+        if(status == StatusVeiculo.EM_USO){
+            throw new IllegalStateException("Um veículo em uso não pode ser enviado para manutenção!");
+        }
+
         status = StatusVeiculo.EM_MANUTENCAO;
     }
 
@@ -35,6 +39,10 @@ public abstract class Veiculo {
     }
 
     public void utilizarVeiculo(){
+        if(status == StatusVeiculo.EM_MANUTENCAO){
+            throw new IllegalStateException("Apenas veículos disponíveis podem ser utilizados!");
+        }
+
         status = StatusVeiculo.EM_USO;
     }
 
@@ -59,5 +67,8 @@ public abstract class Veiculo {
 
     }
 
+    public StatusVeiculo getStatus(){
+        return status;
+    }
 
 }
