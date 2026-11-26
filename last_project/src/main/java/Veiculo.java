@@ -1,7 +1,7 @@
 import Enums.StatusVeiculo;
 
 public abstract class Veiculo {
-    private int codigo;
+    private final int codigo;
     private static int contadorVeiculo = 0;
     private String modelo;
     private StatusVeiculo status;

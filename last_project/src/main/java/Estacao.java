@@ -185,6 +185,10 @@ public class Estacao {
         this.estado = estado.trim().toUpperCase();
     }
 
+    public ArrayList <Veiculo> getFrota() {
+        return frota;
+    }
+
     // Metodos auxiliares:
 
     public String getEndereco() {
