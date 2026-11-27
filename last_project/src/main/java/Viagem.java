@@ -9,27 +9,43 @@ public class Viagem {
     private final LocalDateTime dataInicio;
     private LocalDateTime dataFim;
 
-    private Usuario usuario;
-    private Veiculo veiculo;
+    private final Usuario usuario;
+    private final Veiculo veiculo;
 
-    private Estacao estacaoPartida;
+    private final Estacao estacaoPartida;
     private Estacao estacaoChegada;
 
     private double valorTotal;
 
 
     Viagem(Usuario usuario, Veiculo veiculo, Estacao estacaoPartida){
-        setUsuario(usuario);
-        setVeiculo(veiculo);
-        setEstacaoPartida(estacaoPartida);
 
+        if(usuario == null){
+            throw new IllegalArgumentException("Usuário não pode ser null para inicar uma viagem.");
+        }
+
+        if(veiculo == null){
+            throw new IllegalArgumentException("Veiculo não pode ser null para inicar uma viagem.");
+        }
+
+        if(estacaoPartida == null){
+            throw new IllegalArgumentException("Estação de partida não pode ser null para inicar uma viagem.");
+        }
+
+        if (!estacaoPartida.possuiVeiculo(veiculo.getCodigo())) {
+            throw new IllegalArgumentException("A estação de partida não possui este veículo!");
+        }
+
+        estacaoPartida.removerVeiculo(veiculo);
+
+        this.usuario = usuario;
+        this.veiculo = veiculo;
+        this.estacaoPartida = estacaoPartida;
         dataInicio = LocalDateTime.now();
 
         contadorViagem++;
         codigo = contadorViagem;
 
-        estacaoPartida.getFrota().remove(veiculo);
-        veiculo.utilizarVeiculo();
     }
 
     public boolean encerrarViagem(Estacao estacaoChegada){
@@ -38,37 +54,53 @@ public class Viagem {
             throw new IllegalArgumentException("Esta viagem já foi encerrada!");
         }
 
-        setEstacaoChegada(estacaoChegada);
-        setDataFim(LocalDateTime.now());
+        if(estacaoChegada == null){
+            throw new IllegalArgumentException("Estacao de chegada não pode ser null para encerrar uma viagem.");
+        }
 
-        estacaoChegada.getFrota().add(veiculo);
-        veiculo.disponibilizarVeiculo();
+        // esse vai verificar se tem vaga na estacaoChegada
+        if(!estacaoChegada.possuiVagaDisponivel()){
+            throw new IndexOutOfBoundsException("A estação de chegada não tem vagas disponíveis!");
+        }
+
+        LocalDateTime dataFim = LocalDateTime.now();
+
+        if(dataFim.isBefore(dataInicio)){
+            throw new IllegalArgumentException("A data de fim não pode ser anterior à data de início.");
+        }
+
+        // faz o calculo para so depois atribuir a variavel
+        double calcularValorTotal = calcularValorTotal(dataFim);
+
+        // adiciona o veiculo e ja faz a validacao
+        if(!estacaoChegada.estacionarVeiculo(veiculo)){
+            throw new IllegalStateException("Não foi possívle adicionar o veículo à estação de chegada!");
+        }
+
+        this.valorTotal = calcularValorTotal;
+        this.dataFim = dataFim;
+        this.estacaoChegada = estacaoChegada;
 
         return true;
+    }
+
+    private double calcularValorTotal(LocalDateTime dataFim) {
+
+        long minutos = Duration.between(dataInicio, dataFim).toMinutes();
+
+        double taxaDesbloqueio = veiculo.taxaDesbloqueio();
+        double valorMinuto = veiculo.valorMinuto();
+
+        return taxaDesbloqueio + (minutos * valorMinuto);
     }
 
     public long calcularDuracao() {
 
         if (isEmAndamento()) {
-            throw new IllegalStateException(
-                    "Não é possível calcular a duração de uma viagem em andamento!"
-            );
+            throw new IllegalStateException("Não é possível calcular a duração de uma viagem em andamento!");
         }
 
-        return java.time.Duration.between(dataInicio, dataFim).toMinutes();
-    }
-
-    public void calcularValorTotal(){
-        if (isEmAndamento()) {
-            throw new IllegalStateException(
-                    "Não é possível calcular o valor de uma viagem em andamento!"
-            );
-        }
-
-        double taxaDesbloqueio = veiculo.taxaDesbloqueio();
-        double valorMinuto = veiculo.valorMinuto();
-
-        valorTotal = taxaDesbloqueio + (calcularDuracao() * valorMinuto);
+        return Duration.between(dataInicio, dataFim).toMinutes();
     }
 
     public int getCodigo() {
@@ -92,74 +124,29 @@ public class Viagem {
         return dataFim;
     }
 
-    public void setDataFim(LocalDateTime dataFim) {
-        if(dataFim.isBefore(dataInicio)){
-            throw new IllegalArgumentException("A data de fim não pode ser anterior à data de início.");
-        }
-
-        this.dataFim = dataFim;
-    }
-
     public Usuario getUsuario() {
         return usuario;
-    }
-
-    private void setUsuario(Usuario usuario) {
-        if(usuario == null){
-            throw new IllegalArgumentException("Usuário não pode ser null para inicar uma viagem.");
-        }
-
-        this.usuario = usuario;
     }
 
     public Veiculo getVeiculo() {
         return veiculo;
     }
 
-    private void setVeiculo(Veiculo veiculo) {
-        if(veiculo == null){
-            throw new IllegalArgumentException("Veiculo não pode ser null para inicar uma viagem.");
-        }
-
-        this.veiculo = veiculo;
-    }
-
     public Estacao getEstacaoPartida() {
         return estacaoPartida;
-    }
-
-    private void setEstacaoPartida(Estacao estacaoPartida) {
-        if(estacaoPartida == null){
-            throw new IllegalArgumentException("Estação de partida não pode ser null para inicar uma viagem.");
-        }
-
-        for(Veiculo veiculo : estacaoPartida.getFrota()){
-            if(veiculo == this.veiculo){
-                this.estacaoPartida = estacaoPartida;
-            }
-        }
-
-        throw new IllegalArgumentException("A estação de partida não possui este veículo!");
-
     }
 
     public Estacao getEstacaoChegada() {
         return estacaoChegada;
     }
 
-    public void setEstacaoChegada(Estacao estacaoChegada) {
-        if(estacaoChegada == null){
-            throw new IllegalArgumentException("Estacao de chegada não pode ser null para encerrar uma viagem.");
-        }
-
-        if(estacaoChegada.getFrota().size() >= estacaoChegada.getQuantidadeVagas()){
-            throw new IndexOutOfBoundsException("A estação de chegada não tem vagas disponíveis!");
-        }
-
-        this.estacaoChegada = estacaoChegada;
-    }
 
     public double getValorTotal(){
+
+        if(!isEmAndamento()){
+            throw new IllegalStateException("O valor total ainda não pode ser calculado!");
+        }
+
         return valorTotal;
     }
 }

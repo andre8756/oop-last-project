@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class Estacao {
     private int codigo;
@@ -34,11 +35,11 @@ public class Estacao {
             throw new IllegalArgumentException("Veículo não pode ser nulo!");
         }
 
-        if (frota.size() >= quantidadeVagas) {
+        if (!possuiVagaDisponivel()) {
             return false;
         }
 
-        if (procurarVeiculo(veiculo.getCodigo()) != null) {
+        if (frota.contains(veiculo)) {
             return false;
         }
 
@@ -57,16 +58,24 @@ public class Estacao {
         return null;
     }
 
-    public boolean removerVeiculo(int codigo) {
-        Veiculo veiculo = procurarVeiculo(codigo);
+    public boolean removerVeiculo(Veiculo veiculo) {
 
-        if (veiculo == null) {
+        if (veiculo == null || !frota.contains(veiculo)) {
             return false;
         }
 
-        frota.remove(veiculo);
+
+
         veiculo.utilizarVeiculo();
+        frota.remove(veiculo);
+
         return true;
+    }
+
+    public boolean removerVeiculo(int codigo) {
+        Veiculo veiculo = procurarVeiculo(codigo);
+
+        return removerVeiculo(veiculo);
     }
 
     public int getCodigo() {
@@ -185,8 +194,20 @@ public class Estacao {
         this.estado = estado.trim().toUpperCase();
     }
 
-    public ArrayList <Veiculo> getFrota() {
-        return frota;
+    public List <Veiculo> getFrota() {
+        return List.copyOf(frota);
+    }
+
+    public boolean possuiVeiculo(int codigo) {
+        return procurarVeiculo(codigo) != null;
+    }
+
+    public boolean possuiVagaDisponivel() {
+        return frota.size() < quantidadeVagas;
+    }
+
+    public int getQuantidadeVeiculos() {
+        return frota.size();
     }
 
     // Metodos auxiliares:

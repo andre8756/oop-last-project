@@ -39,7 +39,7 @@ public abstract class Veiculo {
     }
 
     public void utilizarVeiculo(){
-        if(status == StatusVeiculo.EM_MANUTENCAO){
+        if(status != StatusVeiculo.DISPONIVEL){
             throw new IllegalStateException("Apenas veículos disponíveis podem ser utilizados!");
         }
 
