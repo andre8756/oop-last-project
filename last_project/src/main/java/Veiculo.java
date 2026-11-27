@@ -1,7 +1,7 @@
 import Enums.StatusVeiculo;
 
 public abstract class Veiculo {
-    private int codigo;
+    private final int codigo;
     private static int contadorVeiculo = 0;
     private String modelo;
     private StatusVeiculo status;
@@ -39,7 +39,7 @@ public abstract class Veiculo {
     }
 
     public void utilizarVeiculo(){
-        if(status == StatusVeiculo.EM_MANUTENCAO){
+        if(status != StatusVeiculo.DISPONIVEL){
             throw new IllegalStateException("Apenas veículos disponíveis podem ser utilizados!");
         }
 
