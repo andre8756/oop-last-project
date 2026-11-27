@@ -140,7 +140,7 @@ public class Viagem {
         return estacaoChegada;
     }
 
-
+    // verifica se a viagem ainda esta em andamento antes de retornar o valorTotal
     public double getValorTotal(){
 
         if(!isEmAndamento()){
